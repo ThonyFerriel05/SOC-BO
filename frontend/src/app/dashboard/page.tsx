@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import DepartmentFilter from "@/components/DepartmentFilter";
 import StatsPanel from "@/components/StatsPanel";
 import DownloadButton from "@/components/DownloadButton";
 import Legend from "@/components/Legend";
-import { fetchAllPoints, fetchStats } from "@/lib/api";
+import { fetchSnapshotPoints, fetchSnapshotStats } from "@/lib/api";
 import { MOCK_SAMPLES, MOCK_STATS } from "@/lib/mockData";
 import { DepartamentoFiltro, Sample, StatsResponse } from "@/lib/types";
 
@@ -15,9 +15,11 @@ const HeatMap = dynamic(() => import("@/components/HeatMap"), { ssr: false });
 
 export default function Dashboard() {
   const [departamento, setDepartamento] = useState<DepartamentoFiltro>("Todos");
-  const [points, setPoints] = useState<Sample[]>(MOCK_SAMPLES);
-  const [stats, setStats] = useState<StatsResponse | null>(MOCK_STATS);
-  const [loadingPoints, setLoadingPoints] = useState(false);
+  const [allPoints, setAllPoints] = useState<Sample[]>(MOCK_SAMPLES);
+  const [statsByDepto, setStatsByDepto] = useState<Record<string, StatsResponse>>({
+    Todos: MOCK_STATS,
+  });
+  const [loadingPoints, setLoadingPoints] = useState(true);
   const [usingMock, setUsingMock] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,21 +28,19 @@ export default function Dashboard() {
     setLoadingPoints(true);
     setError(null);
 
-    const depto = departamento === "Todos" ? undefined : departamento;
-
-    Promise.all([fetchAllPoints(depto), fetchStats(depto)])
+    Promise.all([fetchSnapshotPoints(), fetchSnapshotStats()])
       .then(([pointsData, statsData]) => {
         if (cancelled) return;
-        setPoints(pointsData);
-        setStats(statsData);
+        setAllPoints(pointsData);
+        setStatsByDepto(statsData);
         setUsingMock(false);
       })
       .catch(() => {
         if (cancelled) return;
-        setError("No se pudo conectar con la API. Mostrando datos de ejemplo.");
+        setError("No se pudo cargar el dataset. Mostrando datos de ejemplo.");
         setUsingMock(true);
-        setPoints(MOCK_SAMPLES);
-        setStats(MOCK_STATS);
+        setAllPoints(MOCK_SAMPLES);
+        setStatsByDepto({ Todos: MOCK_STATS });
       })
       .finally(() => {
         if (!cancelled) setLoadingPoints(false);
@@ -49,7 +49,17 @@ export default function Dashboard() {
     return () => {
       cancelled = true;
     };
-  }, [departamento]);
+  }, []);
+
+  const points = useMemo(
+    () =>
+      departamento === "Todos"
+        ? allPoints
+        : allPoints.filter((p) => p.departamento === departamento),
+    [allPoints, departamento]
+  );
+
+  const stats = statsByDepto[departamento] ?? statsByDepto.Todos ?? MOCK_STATS;
 
   return (
     <div className="flex h-screen w-screen flex-col bg-neutral-950">
