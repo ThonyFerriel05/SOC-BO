@@ -1,10 +1,17 @@
 type Stop = { pos: number; rgb: [number, number, number] };
 
+// Escala divergente anclada en verde: la banda neutral (±0.15, donde cae el ~87%
+// de los puntos) se mantiene en un verde medio plano, las pérdidas viran a ocre y
+// marrón, y la acumulación fuerte se oscurece hacia el verde profundo. Lo que
+// corrige respecto de la escala anterior es que las pérdidas ya no se pintan de
+// verde: antes un punto en -0.4 salía del mismo color que uno en 0.
 const STOPS: Stop[] = [
-  { pos: -1, rgb: [37, 99, 235] },
-  { pos: 0, rgb: [34, 197, 94] },
-  { pos: 0.5, rgb: [234, 179, 8] },
-  { pos: 1, rgb: [220, 38, 38] },
+  { pos: -1, rgb: [140, 81, 10] },
+  { pos: -0.5, rgb: [216, 179, 101] },
+  { pos: -0.15, rgb: [134, 185, 106] },
+  { pos: 0.15, rgb: [134, 185, 106] },
+  { pos: 0.5, rgb: [56, 142, 60] },
+  { pos: 1, rgb: [20, 83, 45] },
 ];
 
 function lerp(a: number, b: number, t: number): number {
@@ -34,5 +41,9 @@ export function biomassColor(value: number): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-export const BIOMASS_GRADIENT_CSS =
-  "linear-gradient(to right, rgb(37,99,235), rgb(34,197,94), rgb(234,179,8), rgb(220,38,38))";
+// Derivado de STOPS para que la leyenda no pueda desincronizarse del mapa.
+export const BIOMASS_GRADIENT_CSS = `linear-gradient(to right, ${STOPS.map(
+  ({ pos, rgb }) => `rgb(${rgb.join(", ")}) ${((pos + 1) / 2) * 100}%`
+).join(", ")})`;
+
+export const BIOMASS_TICKS = ["-1", "-0.5", "0", "+0.5", "+1"];

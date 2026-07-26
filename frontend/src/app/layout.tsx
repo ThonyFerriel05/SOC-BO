@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Criticalidad en Datos — Oriente Boliviano",
-  description: "Mapa de biomasa/NDVI por punto en Santa Cruz, Beni y Pando",
+  title: "SOC-BO — No predecimos incendios. Medimos criticalidad.",
+  description:
+    "Dataset público de puntos críticos en Santa Cruz, Beni y Pando.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

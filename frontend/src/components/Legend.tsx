@@ -1,13 +1,22 @@
-import { BIOMASS_GRADIENT_CSS } from "@/lib/color";
+import { BIOMASS_GRADIENT_CSS, BIOMASS_TICKS } from "@/lib/color";
 
 export default function Legend() {
   return (
-    <div className="absolute bottom-2 right-2 z-[1000] rounded bg-white/90 px-3 py-2 text-xs text-gray-700 shadow">
-      <p className="mb-1 font-semibold">Diferencia de biomasa</p>
-      <div className="flex items-center gap-2">
-        <span>-1 (descargado)</span>
-        <div className="h-2 w-28 rounded-full" style={{ background: BIOMASS_GRADIENT_CSS }} />
-        <span>+1 (acumulación)</span>
+    <div className="absolute bottom-2 right-2 z-[1000] rounded border border-neutral-800 bg-neutral-900/90 px-3 py-2 text-xs text-neutral-200 shadow-lg">
+      <p className="mb-1.5 font-semibold">Diferencia de biomasa</p>
+      <div
+        className="h-2 w-64 rounded-full border border-neutral-700"
+        style={{ background: BIOMASS_GRADIENT_CSS }}
+      />
+      <div className="mt-1 flex w-64 justify-between font-mono text-[10px] text-neutral-400">
+        {BIOMASS_TICKS.map((tick) => (
+          <span key={tick}>{tick}</span>
+        ))}
+      </div>
+      <div className="flex w-64 justify-between text-[10px] text-neutral-400">
+        <span>Pérdida</span>
+        <span>Neutral (±0.15)</span>
+        <span>Acumulación</span>
       </div>
     </div>
   );

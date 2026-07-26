@@ -1,85 +1,79 @@
-"use client";
+import Link from "next/link";
+import { downloadUrl } from "@/lib/api";
 
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import DepartmentFilter from "@/components/DepartmentFilter";
-import StatsPanel from "@/components/StatsPanel";
-import DownloadButton from "@/components/DownloadButton";
-import Legend from "@/components/Legend";
-import { fetchAllPoints, fetchStats } from "@/lib/api";
-import { MOCK_SAMPLES, MOCK_STATS } from "@/lib/mockData";
-import { DepartamentoFiltro, Sample, StatsResponse } from "@/lib/types";
-
-const HeatMap = dynamic(() => import("@/components/HeatMap"), { ssr: false });
+const STATS = [
+  { value: "57,576", label: "puntos medidos" },
+  { value: "3", label: "departamentos cubiertos" },
+  { value: "~3,3 km", label: "resolución de grilla" },
+];
 
 export default function Home() {
-  const [departamento, setDepartamento] = useState<DepartamentoFiltro>("Todos");
-  const [points, setPoints] = useState<Sample[]>(MOCK_SAMPLES);
-  const [stats, setStats] = useState<StatsResponse | null>(MOCK_STATS);
-  const [loadingPoints, setLoadingPoints] = useState(false);
-  const [usingMock, setUsingMock] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoadingPoints(true);
-    setError(null);
-
-    const depto = departamento === "Todos" ? undefined : departamento;
-
-    Promise.all([fetchAllPoints(depto), fetchStats()])
-      .then(([pointsData, statsData]) => {
-        if (cancelled) return;
-        setPoints(pointsData);
-        setStats(statsData);
-        setUsingMock(false);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setError("No se pudo conectar con la API. Mostrando datos de ejemplo.");
-        setUsingMock(true);
-        setPoints(MOCK_SAMPLES);
-        setStats(MOCK_STATS);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingPoints(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [departamento]);
-
   return (
-    <div className="flex h-screen w-screen flex-col bg-gray-100">
-      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3 shadow-sm">
-        <div>
-          <h1 className="text-lg font-bold text-gray-900">
-            Criticalidad en Datos — Oriente Boliviano
+    <main className="min-h-screen bg-neutral-950 text-neutral-100">
+      <section className="mx-auto flex max-w-5xl flex-col gap-12 px-6 py-24">
+        <header className="flex flex-col gap-6">
+          <h1 className="text-6xl font-bold tracking-tight text-orange-500">
+            SOC-BO
           </h1>
-          <p className="text-xs text-gray-500">
-            Biomasa / NDVI por punto — Santa Cruz, Beni y Pando
+          <p className="text-2xl font-medium text-neutral-100">
+            No predecimos incendios. Medimos criticalidad.
+          </p>
+          <p className="max-w-2xl text-lg leading-relaxed text-neutral-400">
+            El primer instrumento de medición de criticalidad autoorganizada en
+            Bolivia — un dataset público de puntos críticos en Santa Cruz, Beni
+            y Pando.
+          </p>
+        </header>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          {STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-xl border border-neutral-800 bg-neutral-900 p-6"
+            >
+              <p className="text-3xl font-semibold text-emerald-400">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-sm text-neutral-400">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="max-w-3xl border-l-2 border-orange-500/60 pl-6">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-orange-500">
+            El modelo SOC
+          </h2>
+          <p className="leading-relaxed text-neutral-300">
+            La vegetación acumula biomasa de forma continua. Esa acumulación no
+            crece indefinidamente: cada punto del territorio tiene un umbral
+            crítico a partir del cual el sistema deja de absorber y empieza a
+            liberar. Cuando se cruza ese umbral, basta una perturbación mínima
+            para desencadenar un colapso local. SOC-BO mide dónde está cada
+            punto respecto a su umbral, no cuándo ocurrirá el colapso.
           </p>
         </div>
-        {usingMock && (
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">
-            {error ?? "Usando datos de ejemplo"}
-          </span>
-        )}
-      </header>
 
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="flex w-80 flex-shrink-0 flex-col gap-6 overflow-y-auto border-r border-gray-200 bg-white p-4">
-          <DepartmentFilter value={departamento} onChange={setDepartamento} />
-          <DownloadButton departamento={departamento} />
-          <StatsPanel stats={stats} departamento={departamento} />
-        </aside>
-
-        <main className="relative flex-1">
-          <HeatMap points={points} loading={loadingPoints} />
-          <Legend />
-        </main>
-      </div>
-    </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            href="/dashboard"
+            className="rounded-lg bg-orange-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
+          >
+            Explorar dashboard
+          </Link>
+          <Link
+            href="/api"
+            className="rounded-lg border border-emerald-500 px-6 py-3 text-sm font-semibold text-emerald-400 transition-colors hover:bg-emerald-500/10"
+          >
+            Ver documentación de API
+          </Link>
+          <a
+            href={downloadUrl("csv")}
+            className="rounded-lg border border-neutral-700 px-6 py-3 text-sm font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-neutral-100"
+          >
+            Descargar dataset (CSV)
+          </a>
+        </div>
+      </section>
+    </main>
   );
 }

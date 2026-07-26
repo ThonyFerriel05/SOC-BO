@@ -3,8 +3,14 @@ import { Sample, SamplesResponse, StatsResponse } from "./types";
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "http://localhost:8000";
 
-export async function fetchStats(): Promise<StatsResponse> {
-  const res = await fetch(`${API_URL}/stats`, { cache: "no-store" });
+export async function fetchStats(departamento?: string): Promise<StatsResponse> {
+  const search = new URLSearchParams();
+  if (departamento) search.set("departamento", departamento);
+  const query = search.toString();
+
+  const res = await fetch(`${API_URL}/stats${query ? `?${query}` : ""}`, {
+    cache: "no-store",
+  });
   if (!res.ok) throw new Error("No se pudo obtener /stats");
   return res.json();
 }
@@ -30,14 +36,24 @@ export async function fetchSample(id: string): Promise<Sample> {
   return res.json();
 }
 
+// El backend limita page_size a 5000.
+const MAP_PAGE_SIZE = 5000;
+
 export async function fetchAllPoints(departamento?: string): Promise<Sample[]> {
-  const search = new URLSearchParams({ format: "json" });
-  if (departamento) search.set("departamento", departamento);
-  const res = await fetch(`${API_URL}/download?${search.toString()}`, {
-    cache: "no-store",
+  const first = await fetchSamples({
+    page: 1,
+    page_size: MAP_PAGE_SIZE,
+    departamento,
   });
-  if (!res.ok) throw new Error("No se pudo obtener los puntos para el mapa");
-  return res.json();
+  if (first.total_pages <= 1) return first.items;
+
+  const rest = await Promise.all(
+    Array.from({ length: first.total_pages - 1 }, (_, i) =>
+      fetchSamples({ page: i + 2, page_size: MAP_PAGE_SIZE, departamento })
+    )
+  );
+
+  return [...first.items, ...rest.flatMap((page) => page.items)];
 }
 
 export function downloadUrl(format: "csv" | "json", departamento?: string): string {

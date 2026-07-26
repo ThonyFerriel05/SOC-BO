@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+import os
 from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Query
@@ -12,11 +13,19 @@ from seed import seed
 
 app = FastAPI(title="Criticalidad en Datos API", version="1.0.0")
 
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", "*").split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    # La API es publica, de solo lectura y sin cookies. Habilitar credenciales
+    # invalidaria el origen "*" en el navegador.
+    allow_credentials=False,
+    allow_methods=["GET"],
     allow_headers=["*"],
 )
 
@@ -113,14 +122,24 @@ def get_sample(sample_id: str):
 
 
 @app.get("/stats")
-def get_stats():
+def get_stats(departamento: Optional[str] = None):
     conn = get_connection()
+    where_sql, params = build_where(departamento, None, None, None)
 
-    total_puntos = conn.execute("SELECT COUNT(*) FROM samples").fetchone()[0]
-    promedio_global = conn.execute("SELECT AVG(diferencia_biomasa) FROM samples").fetchone()[0]
-    max_val = conn.execute("SELECT MAX(diferencia_biomasa) FROM samples").fetchone()[0]
-    min_val = conn.execute("SELECT MIN(diferencia_biomasa) FROM samples").fetchone()[0]
+    total_puntos = conn.execute(
+        f"SELECT COUNT(*) FROM samples {where_sql}", params
+    ).fetchone()[0]
+    promedio_global = conn.execute(
+        f"SELECT AVG(diferencia_biomasa) FROM samples {where_sql}", params
+    ).fetchone()[0]
+    max_val = conn.execute(
+        f"SELECT MAX(diferencia_biomasa) FROM samples {where_sql}", params
+    ).fetchone()[0]
+    min_val = conn.execute(
+        f"SELECT MIN(diferencia_biomasa) FROM samples {where_sql}", params
+    ).fetchone()[0]
 
+    # Se mantiene sin filtrar para que el desglose siga sirviendo de comparacion.
     por_departamento = conn.execute(
         """
         SELECT departamento, AVG(diferencia_biomasa) AS promedio, COUNT(*) AS count
@@ -131,25 +150,29 @@ def get_stats():
     ).fetchall()
 
     por_municipio = conn.execute(
-        """
+        f"""
         SELECT municipio, departamento, AVG(diferencia_biomasa) AS promedio, COUNT(*) AS count
         FROM samples
+        {where_sql}
         GROUP BY municipio, departamento
         ORDER BY promedio DESC
-        """
+        """,
+        params,
     ).fetchall()
 
     top_riesgo = conn.execute(
-        "SELECT * FROM samples ORDER BY diferencia_biomasa DESC LIMIT 50"
+        f"SELECT * FROM samples {where_sql} ORDER BY diferencia_biomasa DESC LIMIT 50",
+        params,
     ).fetchall()
 
     conn.close()
 
+    # Un filtro sin coincidencias deja los agregados en NULL y rompe el cliente.
     return {
         "total_puntos": total_puntos,
-        "promedio_global": promedio_global,
-        "max_diferencia_biomasa": max_val,
-        "min_diferencia_biomasa": min_val,
+        "promedio_global": promedio_global if promedio_global is not None else 0.0,
+        "max_diferencia_biomasa": max_val if max_val is not None else 0.0,
+        "min_diferencia_biomasa": min_val if min_val is not None else 0.0,
         "por_departamento": [dict(r) for r in por_departamento],
         "por_municipio": [dict(r) for r in por_municipio],
         "top_riesgo": [row_to_dict(r) for r in top_riesgo],
