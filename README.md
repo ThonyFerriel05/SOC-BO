@@ -317,7 +317,7 @@ curl -s "http://localhost:8000/stats" | jq '.por_departamento'
 | Landing `/` | Presenta SOC-BO, stats del dataset, explicación del modelo y CTAs |
 | Dashboard `/dashboard` | Explora el mapa de calor y las estadísticas filtrables |
 | Docs `/api` | Documentación humana de los 4 endpoints |
-| `HeatMap` | Leaflet con tiles claro/oscuro; radio según zoom; agregación en celdas de 10 km cuando zoom ≤ 8 |
+| `HeatMap` | Leaflet con tiles claro/oscuro; radio según zoom; muestra densa en vista general y puntos con tooltip al acercar |
 | `StatsPanel` | Totales, promedio, min/max, ranking por municipio y top de riesgo |
 | `DepartmentFilter` | Filtra mapa y stats por departamento |
 | `DownloadButton` | Descarga CSV/JSON vía `/download` |
@@ -381,8 +381,8 @@ ALLOWED_ORIGINS=https://soc-bo.vercel.app,http://localhost:3000
 ## Notas de diseño del mapa
 
 - La grilla real del dataset es **0,03° ≈ 3,34 km**, no 1 km.
-- A zoom bajo (≤ 8) los puntos se agregan en celdas de **10 km** (promedio de `diferencia_biomasa`) para evitar la mancha continua por solapamiento.
-- A zoom alto se dibujan puntos individuales con radio en píxeles derivado del tamaño real de celda (mín. 2 px, máx. 10 px).
+- A zoom bajo (≤ 8) se dibuja una muestra densa de puntos chicos (sin celdas agregadas) para leer el territorio como superficie continua.
+- A zoom alto: puntos individuales con tooltip y radio derivado del tamaño real de celda.
 - La paleta es divergente: marrón/ocre (déficit) → verde (acumulación).
 
 ---

@@ -19,16 +19,14 @@ const INITIAL_ZOOM = 6;
 
 /** Paso medido de la grilla del dataset: 0.03 grados de latitud. */
 const GRID_METERS = 3340;
-/** Hasta este zoom la celda de la grilla mide menos de 6 px y los puntos se solapan. */
-const AGGREGATION_MAX_ZOOM = 8;
-const AGGREGATION_CELL_METERS = 10000;
-/** Tope de seguridad para el modo de puntos individuales. */
-const MAX_RENDER_POINTS = 15000;
-const MIN_RADIUS_PX = 2;
-const MAX_RADIUS_PX = 10;
+/** Bajo este zoom se muestra una muestra densa (sin celdas agregadas). */
+const OVERVIEW_MAX_ZOOM = 8;
+const OVERVIEW_MAX_POINTS = 8000;
+const DETAIL_MAX_POINTS = 15000;
+const MIN_RADIUS_PX = 1.5;
+const MAX_RADIUS_PX = 8;
 
 const METERS_PER_PIXEL_AT_EQUATOR = 156543.03392;
-const METERS_PER_DEGREE_LAT = 111320;
 
 const OSM_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -48,26 +46,19 @@ const BASEMAPS = {
 
 type BasemapTheme = keyof typeof BASEMAPS;
 
-type MapMarker = {
-  key: string;
-  lat: number;
-  lon: number;
-  valor: number;
-  /** 1 cuando es un punto real del dataset, >1 cuando es una celda agregada. */
-  puntos: number;
-  municipio: string;
-  departamento: string;
-};
-
 function metersPerPixel(zoom: number, lat: number): number {
   return (
     (METERS_PER_PIXEL_AT_EQUATOR * Math.cos((lat * Math.PI) / 180)) / 2 ** zoom
   );
 }
 
-/** Radio en pixeles tal que el disco cubra aproximadamente una celda real. */
-function radiusForZoom(zoom: number, lat: number, cellMeters: number): number {
-  const ideal = cellMeters / 2 / metersPerPixel(zoom, lat);
+/** Radio en pixeles cercano al tamaño real de la celda, con limites para overview. */
+function radiusForZoom(zoom: number, lat: number, overview: boolean): number {
+  const ideal = GRID_METERS / 2 / metersPerPixel(zoom, lat);
+  if (overview) {
+    // Puntos chicos: se lee como superficie continua, no como grilla de celdas.
+    return Math.max(1.2, Math.min(2.5, ideal));
+  }
   return Math.max(MIN_RADIUS_PX, Math.min(MAX_RADIUS_PX, ideal));
 }
 
@@ -81,59 +72,18 @@ function sampleEvenly<T>(items: T[], max: number): T[] {
   return result;
 }
 
-function aggregateToGrid(points: Sample[], cellMeters: number): MapMarker[] {
-  const cellDeg = cellMeters / METERS_PER_DEGREE_LAT;
-  const cells = new Map<
-    string,
-    {
-      latSum: number;
-      lonSum: number;
-      valorSum: number;
-      count: number;
-      departamento: string;
-    }
-  >();
+function filterByBounds(points: Sample[], bounds: LatLngBounds): Sample[] {
+  const padLat = (bounds.getNorth() - bounds.getSouth()) * 0.25;
+  const padLon = (bounds.getEast() - bounds.getWest()) * 0.25;
+  const south = bounds.getSouth() - padLat;
+  const north = bounds.getNorth() + padLat;
+  const west = bounds.getWest() - padLon;
+  const east = bounds.getEast() + padLon;
 
-  for (const p of points) {
-    const key = `${Math.floor(p.lat / cellDeg)}:${Math.floor(p.lon / cellDeg)}`;
-    const cell = cells.get(key);
-    if (cell) {
-      cell.latSum += p.lat;
-      cell.lonSum += p.lon;
-      cell.valorSum += p.diferencia_biomasa;
-      cell.count += 1;
-    } else {
-      cells.set(key, {
-        latSum: p.lat,
-        lonSum: p.lon,
-        valorSum: p.diferencia_biomasa,
-        count: 1,
-        departamento: p.departamento,
-      });
-    }
-  }
-
-  return Array.from(cells, ([key, cell]) => ({
-    key,
-    lat: cell.latSum / cell.count,
-    lon: cell.lonSum / cell.count,
-    valor: cell.valorSum / cell.count,
-    puntos: cell.count,
-    municipio: "",
-    departamento: cell.departamento,
-  }));
-}
-
-function toMarker(p: Sample): MapMarker {
-  return {
-    key: p.id,
-    lat: p.lat,
-    lon: p.lon,
-    valor: p.diferencia_biomasa,
-    puntos: 1,
-    municipio: p.municipio,
-    departamento: p.departamento,
-  };
+  return points.filter(
+    (p) =>
+      p.lat >= south && p.lat <= north && p.lon >= west && p.lon <= east,
+  );
 }
 
 type Viewport = { zoom: number; bounds: LatLngBounds | null };
@@ -170,38 +120,24 @@ export default function HeatMap({
     bounds: null,
   });
   const basemap = BASEMAPS[theme];
-
-  const agregado = viewport.zoom <= AGGREGATION_MAX_ZOOM;
+  const overview = viewport.zoom <= OVERVIEW_MAX_ZOOM;
 
   const markers = useMemo(() => {
-    if (agregado) return aggregateToGrid(points, AGGREGATION_CELL_METERS);
+    if (overview) {
+      return sampleEvenly(points, OVERVIEW_MAX_POINTS);
+    }
 
-    const bounds = viewport.bounds;
-    if (!bounds) return sampleEvenly(points, MAX_RENDER_POINTS).map(toMarker);
-
-    // Margen extra para que al desplazar el mapa no aparezcan bordes vacios.
-    const padLat = (bounds.getNorth() - bounds.getSouth()) * 0.25;
-    const padLon = (bounds.getEast() - bounds.getWest()) * 0.25;
-    const south = bounds.getSouth() - padLat;
-    const north = bounds.getNorth() + padLat;
-    const west = bounds.getWest() - padLon;
-    const east = bounds.getEast() + padLon;
-
-    const visibles = points.filter(
-      (p) =>
-        p.lat >= south && p.lat <= north && p.lon >= west && p.lon <= east,
-    );
-    return sampleEvenly(visibles, MAX_RENDER_POINTS).map(toMarker);
-  }, [points, agregado, viewport.bounds]);
+    const visibles = viewport.bounds
+      ? filterByBounds(points, viewport.bounds)
+      : points;
+    return sampleEvenly(visibles, DETAIL_MAX_POINTS);
+  }, [points, overview, viewport.bounds]);
 
   const latReferencia = viewport.bounds
     ? viewport.bounds.getCenter().lat
     : BOLIVIA_ORIENTE_CENTER[0];
-  const radius = radiusForZoom(
-    viewport.zoom,
-    latReferencia,
-    agregado ? AGGREGATION_CELL_METERS : GRID_METERS,
-  );
+  const radius = radiusForZoom(viewport.zoom, latReferencia, overview);
+  const fillOpacity = overview ? 0.55 : 0.8;
 
   return (
     <div className="relative h-full w-full">
@@ -223,50 +159,40 @@ export default function HeatMap({
         preferCanvas
         className="h-full w-full"
       >
-        {/* La atribución solo se aplica al montar, por eso el remount con key. */}
         <TileLayer
           key={theme}
           attribution={basemap.attribution}
           url={basemap.url}
         />
         <ViewportWatcher onChange={setViewport} />
-        {markers.map((m) => (
+        {markers.map((p) => (
           <CircleMarker
-            key={m.key}
-            center={[m.lat, m.lon]}
+            key={p.id}
+            center={[p.lat, p.lon]}
             radius={radius}
             pathOptions={{
-              color: biomassColor(m.valor),
-              fillColor: biomassColor(m.valor),
-              fillOpacity: 0.75,
+              color: biomassColor(p.diferencia_biomasa),
+              fillColor: biomassColor(p.diferencia_biomasa),
+              fillOpacity,
               weight: 0,
             }}
           >
-            <Tooltip direction="top" opacity={0.95}>
-              <div className="text-xs">
-                {m.puntos > 1 ? (
-                  <>
-                    <strong>{m.puntos.toLocaleString()} puntos</strong> (celda de
-                    10 km)
-                    <br />Δ biomasa promedio: {m.valor.toFixed(4)}
-                  </>
-                ) : (
-                  <>
-                    <strong>{m.municipio}</strong> ({m.departamento})
-                    <br />Δ biomasa: {m.valor.toFixed(4)}
-                  </>
-                )}
-              </div>
-            </Tooltip>
+            {!overview && (
+              <Tooltip direction="top" opacity={0.95}>
+                <div className="text-xs">
+                  <strong>{p.municipio}</strong> ({p.departamento})
+                  <br />Δ biomasa: {p.diferencia_biomasa.toFixed(4)}
+                </div>
+              </Tooltip>
+            )}
           </CircleMarker>
         ))}
       </MapContainer>
       <div className="absolute bottom-2 left-2 z-[1000] rounded border border-neutral-800 bg-neutral-900/90 px-2 py-1 text-xs text-neutral-300 shadow-lg">
-        {agregado ? (
+        {overview ? (
           <>
-            {markers.length.toLocaleString()} celdas de 10 km ·{" "}
-            {points.length.toLocaleString()} puntos · acercá para ver puntos
-            individuales
+            Vista general · {markers.length.toLocaleString()} de{" "}
+            {points.length.toLocaleString()} puntos · acercá para detalle
           </>
         ) : (
           <>
