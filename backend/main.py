@@ -13,11 +13,13 @@ from seed import seed
 
 app = FastAPI(title="Criticalidad en Datos API", version="1.0.0")
 
+# Una variable definida pero vacia no activa el default de getenv, y dejaria la
+# lista sin origenes, que en CORS significa bloquear todo.
 ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv("ALLOWED_ORIGINS", "*").split(",")
     if origin.strip()
-]
+] or ["*"]
 
 app.add_middleware(
     CORSMiddleware,
