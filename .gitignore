@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+backend/samples.db
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/next-env.d.ts
+npm-debug.log*
+
+# Env files (contienen config local, no secretos por ahora, pero no se versionan)
+.env
+.env.local
+.env.*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Datos grandes / generados (el CSV fuente se versiona aparte si el repo lo permite)
+*.db
+*.sqlite3
