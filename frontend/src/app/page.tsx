@@ -4,7 +4,7 @@ import { downloadUrl } from "@/lib/api";
 const STATS = [
   { value: "57,576", label: "puntos medidos" },
   { value: "3", label: "departamentos cubiertos" },
-  { value: "~3,3 km", label: "resolución de grilla" },
+  { value: "~1 km", label: "resolución de grilla" },
 ];
 
 export default function Home() {

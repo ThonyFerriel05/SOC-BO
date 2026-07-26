@@ -16,7 +16,7 @@ SOC-BO mide **dónde está cada punto respecto a su umbral** (`diferencia_biomas
 |---|---|
 | Puntos medidos | 57.576 |
 | Departamentos | Santa Cruz, Beni, Pando |
-| Resolución de grilla | ~3,3 km (0,03° de latitud) |
+| Resolución de grilla | ~1 km |
 | Campo principal | `diferencia_biomasa` |
 
 ---
@@ -382,7 +382,7 @@ ALLOWED_ORIGINS=https://soc-bo.vercel.app,http://localhost:3000
 
 - La grilla real del dataset es **0,03° ≈ 3,34 km**, no 1 km.
 - A zoom bajo (≤ 8) se dibuja una muestra densa de puntos chicos (sin celdas agregadas) para leer el territorio como superficie continua.
-- A zoom alto: puntos individuales con tooltip y radio derivado del tamaño real de celda.
+- A zoom alto: puntos individuales con tooltip y radio derivado de una celda nominal de ~1 km.
 - La paleta es divergente: marrón/ocre (déficit) → verde (acumulación).
 
 ---

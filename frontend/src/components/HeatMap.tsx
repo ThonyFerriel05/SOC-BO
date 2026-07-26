@@ -17,8 +17,8 @@ import { biomassColor } from "@/lib/color";
 const BOLIVIA_ORIENTE_CENTER: [number, number] = [-15.5, -64.5];
 const INITIAL_ZOOM = 6;
 
-/** Paso medido de la grilla del dataset: 0.03 grados de latitud. */
-const GRID_METERS = 3340;
+/** Tamaño nominal de celda para el radio visual (~1 km). */
+const GRID_METERS = 1000;
 /** Bajo este zoom se muestra una muestra densa (sin celdas agregadas). */
 const OVERVIEW_MAX_ZOOM = 8;
 const OVERVIEW_MAX_POINTS = 8000;
