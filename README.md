@@ -52,7 +52,7 @@ CRITICALIDAD-EN-DATOS/
 | Datos | SQLite (sembrada desde CSV al arrancar) |
 | Frontend | Next.js 16, React 19, Tailwind CSS 4 |
 | Mapa | Leaflet + react-leaflet (canvas) |
-| Deploy API | Render (Web Service, plan Starter) |
+| Deploy API | Render (Web Service, plan Free; subir a Starter cuando haya tarjeta) |
 | Deploy web | Vercel (Root Directory = `frontend`) |
 
 ---
@@ -350,7 +350,7 @@ El archivo `render.yaml` ya define el servicio:
 - Runtime: Python 3.12
 - Root: `backend`
 - Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-- Plan: Starter (sin cold start)
+- Plan: Free (duerme tras inactividad; el primer request puede tardar ~30–60 s)
 - Env: `ALLOWED_ORIGINS` (orígenes del frontend, separados por coma)
 
 En el primer arranque, `seed()` reconstruye `samples.db` desde el CSV versionado. No hace falta disco persistente.
