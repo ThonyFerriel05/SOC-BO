@@ -15,7 +15,7 @@ export default function Legend() {
       </div>
       <div className="flex w-64 justify-between text-[10px] text-neutral-400">
         <span>Pérdida</span>
-        <span>Neutral (±0.15)</span>
+        <span>Neutral</span>
         <span>Acumulación</span>
       </div>
     </div>

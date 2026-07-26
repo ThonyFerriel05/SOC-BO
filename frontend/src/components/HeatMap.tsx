@@ -21,7 +21,7 @@ const INITIAL_ZOOM = 6;
 const GRID_METERS = 1000;
 /** Bajo este zoom se muestra una muestra densa (sin celdas agregadas). */
 const OVERVIEW_MAX_ZOOM = 8;
-const OVERVIEW_MAX_POINTS = 8000;
+const OVERVIEW_MAX_POINTS = 20000;
 const DETAIL_MAX_POINTS = 15000;
 const MIN_RADIUS_PX = 1.5;
 const MAX_RADIUS_PX = 8;
@@ -30,17 +30,18 @@ const METERS_PER_PIXEL_AT_EQUATOR = 156543.03392;
 
 const OSM_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const CARTO_ATTRIBUTION = `${OSM_ATTRIBUTION} &copy; <a href="https://carto.com/attributions">CARTO</a>`;
 
 const BASEMAPS = {
+  claro: {
+    label: "Mapa oscuro",
+    url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    attribution: CARTO_ATTRIBUTION,
+  },
   oscuro: {
     label: "Mapa claro",
     url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    attribution: `${OSM_ATTRIBUTION} &copy; <a href="https://carto.com/attributions">CARTO</a>`,
-  },
-  claro: {
-    label: "Mapa oscuro",
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution: OSM_ATTRIBUTION,
+    attribution: CARTO_ATTRIBUTION,
   },
 } as const;
 
@@ -56,8 +57,8 @@ function metersPerPixel(zoom: number, lat: number): number {
 function radiusForZoom(zoom: number, lat: number, overview: boolean): number {
   const ideal = GRID_METERS / 2 / metersPerPixel(zoom, lat);
   if (overview) {
-    // Puntos chicos: se lee como superficie continua, no como grilla de celdas.
-    return Math.max(1.2, Math.min(2.5, ideal));
+    // Puntos chicos y algo solapados: se lee como superficie continua.
+    return Math.max(1.6, Math.min(3.5, ideal));
   }
   return Math.max(MIN_RADIUS_PX, Math.min(MAX_RADIUS_PX, ideal));
 }
@@ -114,7 +115,7 @@ export default function HeatMap({
   points: Sample[];
   loading: boolean;
 }) {
-  const [theme, setTheme] = useState<BasemapTheme>("oscuro");
+  const [theme, setTheme] = useState<BasemapTheme>("claro");
   const [viewport, setViewport] = useState<Viewport>({
     zoom: INITIAL_ZOOM,
     bounds: null,
@@ -137,7 +138,7 @@ export default function HeatMap({
     ? viewport.bounds.getCenter().lat
     : BOLIVIA_ORIENTE_CENTER[0];
   const radius = radiusForZoom(viewport.zoom, latReferencia, overview);
-  const fillOpacity = overview ? 0.55 : 0.8;
+  const fillOpacity = overview ? 0.85 : 0.9;
 
   return (
     <div className="relative h-full w-full">
