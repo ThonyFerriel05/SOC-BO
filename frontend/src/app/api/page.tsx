@@ -110,7 +110,7 @@ const ENDPOINTS: Endpoint[] = [
 export default function ApiDocs() {
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <div className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-12 sm:gap-10 sm:px-6 sm:py-20">
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-12 sm:max-w-2xl sm:gap-10 sm:px-6 sm:py-16 md:max-w-4xl md:py-20 lg:max-w-5xl lg:px-8">
         <header className="flex flex-col gap-4">
           <Link
             href="/"

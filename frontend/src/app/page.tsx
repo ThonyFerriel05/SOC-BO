@@ -27,15 +27,15 @@ const CITA =
 export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-200">
-      <article className="mx-auto flex max-w-3xl flex-col gap-12 px-5 py-14 sm:px-6 sm:py-20">
+      <article className="mx-auto flex w-full max-w-xl flex-col gap-10 px-5 py-12 sm:max-w-2xl sm:gap-12 sm:px-6 sm:py-16 md:max-w-4xl md:py-20 lg:max-w-5xl lg:px-8">
         <header className="flex flex-col gap-4 border-b border-neutral-800 pb-8">
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-100">
+          <h1 className="text-3xl font-semibold tracking-tight text-neutral-100 md:text-4xl">
             SOC-BO
           </h1>
           <p className="text-sm uppercase tracking-widest text-[#c08457]">
             Criticalidad autoorganizada en biomasa
           </p>
-          <p className="max-w-2xl text-base leading-relaxed text-neutral-400">
+          <p className="max-w-prose text-base leading-relaxed text-neutral-400 md:max-w-3xl">
             Dataset de criticalidad autoorganizada calculado mediante el modelo
             sandpile de Bak-Tang-Wiesenfeld, aplicado a la acumulación de biomasa
             en Santa Cruz, Beni y Pando.
