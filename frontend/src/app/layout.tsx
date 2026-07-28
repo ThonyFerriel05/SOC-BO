@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SOC-BO — No predecimos incendios. Medimos criticalidad.",
+  title: "SOC-BO — Dataset de criticalidad autoorganizada en biomasa",
   description:
-    "Dataset público de puntos críticos en Santa Cruz, Beni y Pando.",
+    "Dataset de criticalidad autoorganizada (modelo sandpile de Bak-Tang-Wiesenfeld) aplicado a la acumulación de biomasa en Santa Cruz, Beni y Pando.",
 };
 
 export default function RootLayout({

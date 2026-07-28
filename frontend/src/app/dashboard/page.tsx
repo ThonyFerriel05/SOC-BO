@@ -118,7 +118,7 @@ export default function Dashboard() {
           <button
             type="button"
             onClick={() => setPanelOpen(true)}
-            className="absolute bottom-4 left-4 z-[1100] rounded-full bg-orange-500 px-4 py-2.5 text-sm font-semibold text-neutral-950 shadow-lg transition-colors hover:bg-orange-400 md:hidden"
+            className="absolute bottom-4 left-4 z-[1100] rounded-full bg-[#c08457] px-4 py-2.5 text-sm font-semibold text-neutral-950 shadow-lg transition-colors hover:bg-[#cd9269] md:hidden"
           >
             Filtros y estadísticas
           </button>

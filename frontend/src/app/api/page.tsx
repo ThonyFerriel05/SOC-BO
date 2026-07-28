@@ -118,16 +118,18 @@ export default function ApiDocs() {
           >
             ← Inicio
           </Link>
-          <h1 className="text-4xl font-bold text-orange-500">API SOC-BO</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-neutral-100">
+            API SOC-BO
+          </h1>
           <p className="text-neutral-400">
-            Diseñado para ser consumido por investigadores, aplicaciones de
-            terceros, o agentes de IA.
+            Interfaz REST de solo lectura para el acceso programático al dataset,
+            orientada a investigadores, aplicaciones de terceros y agentes de IA.
           </p>
           <div className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3">
             <p className="text-xs uppercase tracking-widest text-neutral-500">
               URL base
             </p>
-            <code className="break-all font-mono text-sm text-emerald-400">
+            <code className="break-all font-mono text-sm text-neutral-200">
               {API_URL}
             </code>
           </div>
@@ -139,7 +141,7 @@ export default function ApiDocs() {
             className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 sm:p-6"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded bg-emerald-500/15 px-2 py-1 font-mono text-xs font-semibold text-emerald-400">
+              <span className="rounded bg-neutral-800 px-2 py-1 font-mono text-xs font-semibold text-neutral-300">
                 {endpoint.method}
               </span>
               <code className="break-all font-mono text-base text-neutral-100 sm:text-lg">
@@ -149,7 +151,7 @@ export default function ApiDocs() {
             <p className="text-sm text-neutral-400">{endpoint.description}</p>
 
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-orange-500">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#c08457]">
                 Request
               </p>
               <pre className="overflow-x-auto rounded-lg bg-neutral-950 p-4 font-mono text-xs text-neutral-300">
@@ -158,7 +160,7 @@ export default function ApiDocs() {
             </div>
 
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-orange-500">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#c08457]">
                 Response
               </p>
               <pre className="overflow-x-auto rounded-lg bg-neutral-950 p-4 font-mono text-xs text-neutral-300">
