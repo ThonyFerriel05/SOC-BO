@@ -10,15 +10,15 @@ const STATS = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <section className="mx-auto flex max-w-5xl flex-col gap-12 px-6 py-24">
-        <header className="flex flex-col gap-6">
-          <h1 className="text-6xl font-bold tracking-tight text-orange-500">
+      <section className="mx-auto flex max-w-5xl flex-col gap-10 px-5 py-14 sm:gap-12 sm:px-6 sm:py-24">
+        <header className="flex flex-col gap-5 sm:gap-6">
+          <h1 className="text-5xl font-bold tracking-tight text-orange-500 sm:text-6xl">
             SOC-BO
           </h1>
-          <p className="text-2xl font-medium text-neutral-100">
+          <p className="text-xl font-medium text-neutral-100 sm:text-2xl">
             No predecimos incendios. Medimos criticalidad.
           </p>
-          <p className="max-w-2xl text-lg leading-relaxed text-neutral-400">
+          <p className="max-w-2xl text-base leading-relaxed text-neutral-400 sm:text-lg">
             El primer instrumento de medición de criticalidad autoorganizada en
             Bolivia — un dataset público de puntos críticos en Santa Cruz, Beni
             y Pando.
@@ -53,22 +53,22 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <Link
             href="/dashboard"
-            className="rounded-lg bg-orange-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
+            className="rounded-lg bg-orange-500 px-6 py-3 text-center text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
           >
             Explorar dashboard
           </Link>
           <Link
             href="/api"
-            className="rounded-lg border border-emerald-500 px-6 py-3 text-sm font-semibold text-emerald-400 transition-colors hover:bg-emerald-500/10"
+            className="rounded-lg border border-emerald-500 px-6 py-3 text-center text-sm font-semibold text-emerald-400 transition-colors hover:bg-emerald-500/10"
           >
             Ver documentación de API
           </Link>
           <a
             href={downloadUrl("csv")}
-            className="rounded-lg border border-neutral-700 px-6 py-3 text-sm font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-neutral-100"
+            className="rounded-lg border border-neutral-700 px-6 py-3 text-center text-sm font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-neutral-100"
           >
             Descargar dataset (CSV)
           </a>

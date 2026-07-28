@@ -110,7 +110,7 @@ const ENDPOINTS: Endpoint[] = [
 export default function ApiDocs() {
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <div className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-20">
+      <div className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-12 sm:gap-10 sm:px-6 sm:py-20">
         <header className="flex flex-col gap-4">
           <Link
             href="/"
@@ -127,20 +127,22 @@ export default function ApiDocs() {
             <p className="text-xs uppercase tracking-widest text-neutral-500">
               URL base
             </p>
-            <code className="font-mono text-sm text-emerald-400">{API_URL}</code>
+            <code className="break-all font-mono text-sm text-emerald-400">
+              {API_URL}
+            </code>
           </div>
         </header>
 
         {ENDPOINTS.map((endpoint) => (
           <section
             key={endpoint.path}
-            className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-6"
+            className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 sm:p-6"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="rounded bg-emerald-500/15 px-2 py-1 font-mono text-xs font-semibold text-emerald-400">
                 {endpoint.method}
               </span>
-              <code className="font-mono text-lg text-neutral-100">
+              <code className="break-all font-mono text-base text-neutral-100 sm:text-lg">
                 {endpoint.path}
               </code>
             </div>

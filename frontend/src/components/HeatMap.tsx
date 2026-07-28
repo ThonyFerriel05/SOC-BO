@@ -189,7 +189,7 @@ export default function HeatMap({
           </CircleMarker>
         ))}
       </MapContainer>
-      <div className="absolute bottom-2 left-2 z-[1000] rounded border border-neutral-800 bg-neutral-900/90 px-2 py-1 text-xs text-neutral-300 shadow-lg">
+      <div className="absolute bottom-2 left-2 z-[1000] hidden rounded border border-neutral-800 bg-neutral-900/90 px-2 py-1 text-xs text-neutral-300 shadow-lg md:block">
         {overview ? (
           <>
             Vista general · {markers.length.toLocaleString()} de{" "}
