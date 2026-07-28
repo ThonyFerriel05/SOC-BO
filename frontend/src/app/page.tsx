@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AboutSection from "@/components/AboutSection";
 import { downloadUrl } from "@/lib/api";
 
 const METADATA: { label: string; value: string }[] = [
@@ -103,6 +104,8 @@ export default function Home() {
             adaptación citando la fuente.
           </p>
         </section>
+
+        <AboutSection />
 
         <section className="flex flex-col gap-3 border-t border-neutral-800 pt-8">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#c08457]">
