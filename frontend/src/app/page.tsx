@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AboutSection from "@/components/AboutSection";
+import LandingMapSection from "@/components/LandingMapSection";
 import { downloadUrl } from "@/lib/api";
 
 const METADATA: { label: string; value: string }[] = [
@@ -24,10 +25,13 @@ const LIMITACIONES: string[] = [
 const CITA =
   "SOC-BO (2026). Dataset de criticalidad autoorganizada en biomasa — oriente boliviano (Santa Cruz, Beni y Pando). https://soc-bo.vercel.app";
 
+const CONTENT_WIDTH =
+  "mx-auto flex w-full max-w-xl flex-col gap-10 px-5 py-12 sm:max-w-2xl sm:gap-12 sm:px-6 sm:py-16 md:max-w-4xl md:py-20 lg:max-w-5xl lg:px-8";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-200">
-      <article className="mx-auto flex w-full max-w-xl flex-col gap-10 px-5 py-12 sm:max-w-2xl sm:gap-12 sm:px-6 sm:py-16 md:max-w-4xl md:py-20 lg:max-w-5xl lg:px-8">
+      <div className={CONTENT_WIDTH}>
         <header className="flex flex-col gap-4 border-b border-neutral-800 pb-8">
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-100 md:text-4xl">
             SOC-BO
@@ -41,7 +45,11 @@ export default function Home() {
             en Santa Cruz, Beni y Pando.
           </p>
         </header>
+      </div>
 
+      <LandingMapSection />
+
+      <div className={`${CONTENT_WIDTH} pt-10 sm:pt-12`}>
         <section className="flex flex-col gap-3">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[#c08457]">
             Metodología — el modelo SOC
@@ -119,7 +127,10 @@ export default function Home() {
               >
                 Documentación de la API
               </Link>
-              <span className="text-neutral-500"> — endpoints REST, ejemplos de request y response.</span>
+              <span className="text-neutral-500">
+                {" "}
+                — endpoints REST, ejemplos de request y response.
+              </span>
             </li>
             <li>
               <a
@@ -128,20 +139,26 @@ export default function Home() {
               >
                 Descarga del dataset (CSV)
               </a>
-              <span className="text-neutral-500"> — conjunto completo de puntos.</span>
+              <span className="text-neutral-500">
+                {" "}
+                — conjunto completo de puntos.
+              </span>
             </li>
             <li>
               <Link
                 href="/dashboard"
                 className="text-neutral-200 underline decoration-neutral-600 underline-offset-4 transition-colors hover:text-[#c08457] hover:decoration-[#c08457]"
               >
-                Explorador cartográfico
+                Explorador a pantalla completa
               </Link>
-              <span className="text-neutral-500"> — visualización interactiva de la grilla.</span>
+              <span className="text-neutral-500">
+                {" "}
+                — mapa con filtros y estadísticas.
+              </span>
             </li>
           </ul>
         </section>
-      </article>
+      </div>
     </main>
   );
 }
