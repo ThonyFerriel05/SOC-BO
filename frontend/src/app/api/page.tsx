@@ -109,27 +109,26 @@ const ENDPOINTS: Endpoint[] = [
 
 export default function ApiDocs() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
+    <main className="min-h-screen bg-[var(--void)] text-[var(--mist)]">
+      <div className="anomaly-bar" aria-hidden="true" />
       <div className="mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-12 sm:max-w-2xl sm:gap-10 sm:px-6 sm:py-16 md:max-w-4xl md:py-20 lg:max-w-5xl lg:px-8">
         <header className="flex flex-col gap-4">
           <Link
             href="/"
-            className="w-fit text-sm font-medium text-neutral-400 transition-colors hover:text-neutral-100"
+            className="w-fit text-sm font-medium text-[var(--ash)] transition-colors hover:text-[var(--neutral)]"
           >
             ← Inicio
           </Link>
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-100">
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[var(--neutral)]">
             API SOC-BO
           </h1>
-          <p className="text-neutral-400">
+          <p className="text-[var(--ash)]">
             Interfaz REST de solo lectura para el acceso programático al dataset,
             orientada a investigadores, aplicaciones de terceros y agentes de IA.
           </p>
-          <div className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3">
-            <p className="text-xs uppercase tracking-widest text-neutral-500">
-              URL base
-            </p>
-            <code className="break-all font-mono text-sm text-neutral-200">
+          <div className="border border-[var(--line)] bg-[var(--panel)] px-4 py-3">
+            <p className="section-eyebrow w-fit">URL base</p>
+            <code className="mt-2 block break-all font-mono text-sm text-[var(--neutral)]">
               {API_URL}
             </code>
           </div>
@@ -138,32 +137,28 @@ export default function ApiDocs() {
         {ENDPOINTS.map((endpoint) => (
           <section
             key={endpoint.path}
-            className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 sm:p-6"
+            className="flex flex-col gap-4 border border-[var(--line)] bg-[var(--panel)] p-4 sm:p-6"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded bg-neutral-800 px-2 py-1 font-mono text-xs font-semibold text-neutral-300">
+              <span className="border border-[var(--line)] bg-[var(--void)] px-2 py-1 font-mono text-xs font-semibold text-[var(--gain)]">
                 {endpoint.method}
               </span>
-              <code className="break-all font-mono text-base text-neutral-100 sm:text-lg">
+              <code className="break-all font-mono text-base text-[var(--neutral)] sm:text-lg">
                 {endpoint.path}
               </code>
             </div>
-            <p className="text-sm text-neutral-400">{endpoint.description}</p>
+            <p className="text-sm text-[var(--ash)]">{endpoint.description}</p>
 
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#c08457]">
-                Request
-              </p>
-              <pre className="overflow-x-auto rounded-lg bg-neutral-950 p-4 font-mono text-xs text-neutral-300">
+              <p className="section-eyebrow mb-2 w-fit">Request</p>
+              <pre className="overflow-x-auto border border-[var(--line)] bg-[var(--void)] p-4 font-mono text-xs text-[var(--mist)]">
                 {endpoint.request}
               </pre>
             </div>
 
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#c08457]">
-                Response
-              </p>
-              <pre className="overflow-x-auto rounded-lg bg-neutral-950 p-4 font-mono text-xs text-neutral-300">
+              <p className="section-eyebrow mb-2 w-fit">Response</p>
+              <pre className="overflow-x-auto border border-[var(--line)] bg-[var(--void)] p-4 font-mono text-xs text-[var(--mist)]">
                 {endpoint.response}
               </pre>
             </div>

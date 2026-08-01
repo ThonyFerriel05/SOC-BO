@@ -1,44 +1,41 @@
 import { ABOUT } from "@/content/about";
 
+const INNER =
+  "mx-auto w-full max-w-xl px-5 sm:max-w-2xl sm:px-6 md:max-w-4xl lg:max-w-5xl lg:px-8";
+
 export default function AboutSection() {
   return (
-    <section
+    <footer
       id="sobre"
-      className="scroll-mt-16 border-t border-neutral-800 bg-neutral-950 py-10 sm:py-12"
+      className="scroll-mt-16 border-t border-[var(--line)] bg-[var(--void)] py-10 sm:py-12"
     >
-      <div className="mx-auto flex w-full max-w-xl flex-col gap-3 px-5 sm:max-w-2xl sm:px-6 md:max-w-4xl lg:max-w-5xl lg:px-8">
-        <h2 className="text-[10px] font-semibold uppercase tracking-widest text-neutral-600">
+      <div className={`${INNER} flex flex-col gap-3`}>
+        <h2 className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ash)]">
           Sobre el proyecto
         </h2>
-        <p className="text-xs leading-relaxed text-neutral-500">
+        <p className="max-w-2xl text-xs leading-relaxed text-[var(--ash)]">
           {ABOUT.descripcion}
         </p>
-        <table className="w-full border-collapse text-xs">
-          <tbody>
-            {ABOUT.autores.map((autor) => (
-              <tr key={autor.nombre} className="border-b border-neutral-800/50">
-                <th className="w-1/2 py-2 pr-4 text-left font-normal align-top text-neutral-600">
-                  {autor.nombre}
-                </th>
-                <td className="py-2 text-left text-neutral-500">{autor.rol}</td>
-              </tr>
-            ))}
-            <tr className="border-b border-neutral-800/50">
-              <th className="w-1/2 py-2 pr-4 text-left font-normal align-top text-neutral-600">
-                Contacto
-              </th>
-              <td className="py-2 text-left">
-                <a
-                  href={`mailto:${ABOUT.contacto.email}`}
-                  className="text-neutral-500 underline decoration-neutral-700 underline-offset-4 transition-colors hover:text-[#c08457] hover:decoration-[#c08457]"
-                >
-                  {ABOUT.contacto.email}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <dl className="mt-2 grid gap-2 font-mono text-[11px] text-[var(--ash)] sm:grid-cols-2">
+          {ABOUT.autores.map((autor) => (
+            <div key={autor.nombre} className="border-t border-[var(--line)] pt-2">
+              <dt className="text-[var(--mist)]">{autor.nombre}</dt>
+              <dd>{autor.rol}</dd>
+            </div>
+          ))}
+          <div className="border-t border-[var(--line)] pt-2 sm:col-span-2">
+            <dt className="text-[var(--mist)]">Contacto</dt>
+            <dd>
+              <a
+                href={`mailto:${ABOUT.contacto.email}`}
+                className="underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--gain)] hover:decoration-[var(--gain)]"
+              >
+                {ABOUT.contacto.email}
+              </a>
+            </dd>
+          </div>
+        </dl>
       </div>
-    </section>
+    </footer>
   );
 }
