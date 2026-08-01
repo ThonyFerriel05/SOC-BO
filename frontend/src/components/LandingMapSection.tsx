@@ -32,26 +32,31 @@ export default function LandingMapSection() {
   }, []);
 
   return (
-    <section className="flex w-full flex-col gap-3">
-      <div className="mx-auto flex w-full max-w-xl items-end justify-between gap-4 px-5 sm:max-w-2xl sm:px-6 md:max-w-4xl lg:max-w-5xl lg:px-8">
-        <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-[#c08457]">
-            Explorador cartográfico
-          </h2>
-          <p className="mt-1 text-sm text-neutral-500">
-            Distribución espacial de diferencia_biomasa en la grilla.
-          </p>
+    <section
+      id="explorador"
+      className="scroll-mt-16 border-y border-neutral-800 bg-neutral-900/40 py-10 sm:py-12"
+    >
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-4 px-5 sm:max-w-2xl sm:px-6 md:max-w-4xl lg:max-w-5xl lg:px-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#c08457]">
+              Explorador cartográfico
+            </h2>
+            <p className="mt-1 text-sm text-neutral-500">
+              Distribución espacial de diferencia_biomasa en la grilla.
+            </p>
+          </div>
+          <Link
+            href="/dashboard"
+            className="inline-flex shrink-0 items-center justify-center rounded-md bg-[#c08457] px-4 py-2 text-sm font-semibold text-neutral-950 transition-colors hover:bg-[#cd9269]"
+          >
+            Abrir a pantalla completa
+          </Link>
         </div>
-        <Link
-          href="/dashboard"
-          className="shrink-0 text-sm text-neutral-300 underline decoration-neutral-600 underline-offset-4 transition-colors hover:text-[#c08457] hover:decoration-[#c08457]"
-        >
-          Abrir a pantalla completa
-        </Link>
-      </div>
-      <div className="relative mx-auto h-[55vh] min-h-[320px] w-full max-w-xl overflow-hidden border-y border-neutral-800 sm:max-w-2xl md:max-w-4xl md:border md:border-neutral-800 lg:max-w-5xl">
-        <HeatMap points={points} loading={loading} />
-        <Legend />
+        <div className="relative h-[55vh] min-h-[320px] w-full overflow-hidden border border-neutral-800 bg-neutral-950">
+          <HeatMap points={points} loading={loading} />
+          <Legend />
+        </div>
       </div>
     </section>
   );
