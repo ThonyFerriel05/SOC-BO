@@ -32,18 +32,21 @@ const INNER =
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--void)] text-[var(--mist)]">
+    <main className="min-h-screen bg-[var(--void)] text-[var(--ink)]">
       <SiteHeader />
       <LandingMapSection />
 
       <section
         id="metodologia"
-        className="scroll-mt-16 border-b border-[var(--line)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--void)] py-14 sm:py-20"
       >
         <div className={INNER}>
           <Reveal className="flex max-w-3xl flex-col gap-4">
-            <h2 className="section-eyebrow">Metodología — el modelo SOC</h2>
-            <p className="font-serif text-xl leading-relaxed text-[var(--mist)] md:text-2xl">
+            <h2 className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
+              Metodología — el modelo SOC
+            </h2>
+            <p className="font-serif text-xl leading-relaxed text-[var(--ink)] md:text-2xl">
               La vegetación acumula biomasa de forma continua. Bajo el modelo
               sandpile de Bak-Tang-Wiesenfeld, cada punto del territorio tiene
               un umbral crítico a partir del cual la acumulación deja de ser
@@ -59,11 +62,14 @@ export default function Home() {
 
       <section
         id="dataset"
-        className="scroll-mt-16 border-b border-[var(--line)] bg-[var(--panel)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--panel)] py-14 sm:py-20"
       >
         <div className={INNER}>
           <Reveal className="flex flex-col gap-4">
-            <h2 className="section-eyebrow">Metadata del dataset</h2>
+            <h2 className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
+              Metadata del dataset
+            </h2>
             <div className="overflow-hidden border border-[var(--line)] bg-[var(--void)]">
               <table className="w-full border-collapse text-sm">
                 <tbody>
@@ -72,10 +78,10 @@ export default function Home() {
                       key={row.label}
                       className="border-b border-[var(--line)] last:border-b-0"
                     >
-                      <th className="w-[42%] px-4 py-3 text-left align-top font-sans text-xs font-medium uppercase tracking-wide text-[var(--ash)] sm:w-1/2">
+                      <th className="w-[42%] px-4 py-3 text-left align-top font-sans text-xs font-medium uppercase tracking-wide text-[var(--mute)] sm:w-1/2">
                         {row.label}
                       </th>
-                      <td className="px-4 py-3 text-left font-mono text-[13px] tabular-nums text-[var(--neutral)]">
+                      <td className="px-4 py-3 text-left font-mono text-[13px] tabular-nums text-[var(--ink)]">
                         {row.value}
                       </td>
                     </tr>
@@ -89,39 +95,43 @@ export default function Home() {
 
       <section
         id="limitaciones"
-        className="scroll-mt-16 border-b border-[var(--line)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--void)] py-14 sm:py-20"
       >
         <div className={INNER}>
-          <Reveal>
-            <div className="border border-[var(--line)] border-l-[3px] border-l-[var(--loss)] bg-[var(--panel)] p-5 sm:p-7">
-              <h2 className="section-eyebrow">Limitaciones</h2>
-              <ul className="mt-5 flex flex-col gap-3 text-sm leading-relaxed text-[var(--mist)]">
-                {LIMITACIONES.map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span
-                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--loss)]"
-                      aria-hidden="true"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <Reveal className="flex flex-col gap-4">
+            <h2 className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
+              Limitaciones
+            </h2>
+            <ul className="flex flex-col gap-3 text-sm leading-relaxed text-[var(--ink)]">
+              {LIMITACIONES.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span
+                    className="mt-1.5 h-[7px] w-[7px] shrink-0 rounded-full bg-[var(--loss)]"
+                    aria-hidden="true"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </section>
 
       <section
         id="citar"
-        className="scroll-mt-16 border-b border-[var(--line)] bg-[var(--panel)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--panel)] py-14 sm:py-20"
       >
         <div className={`${INNER} flex flex-col gap-4`}>
           <Reveal className="flex flex-col gap-4">
-            <h2 className="section-eyebrow">Cómo citar este dataset</h2>
-            <pre className="overflow-x-auto whitespace-pre-wrap border border-[var(--line)] bg-[var(--void)] p-4 font-mono text-xs leading-relaxed text-[var(--mist)]">
+            <h2 className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
+              Cómo citar este dataset
+            </h2>
+            <pre className="overflow-x-auto whitespace-pre-wrap border border-[var(--line)] bg-[var(--void)] p-4 font-mono text-xs leading-relaxed text-[var(--ink)]">
               {CITA}
             </pre>
-            <p className="text-sm leading-relaxed text-[var(--ash)]">
+            <p className="text-sm leading-relaxed text-[var(--mute)]">
               Los datos se distribuyen bajo licencia Creative Commons Atribución
               4.0 Internacional (CC BY 4.0). Se permite el uso, redistribución y
               adaptación citando la fuente.
@@ -132,42 +142,45 @@ export default function Home() {
 
       <section
         id="acceso"
-        className="scroll-mt-16 border-b border-[var(--line)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--void)] py-14 sm:py-20"
       >
         <div className={INNER}>
           <Reveal className="flex flex-col gap-5">
-            <h2 className="section-eyebrow">Acceso a los datos</h2>
+            <h2 className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
+              Acceso a los datos
+            </h2>
             <ul className="flex flex-col gap-4 text-sm">
               <li className="border-b border-[var(--line)] pb-4">
                 <Link
                   href="/api"
-                  className="font-serif text-lg text-[var(--neutral)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--gain)] hover:decoration-[var(--gain)]"
+                  className="font-serif text-lg text-[var(--ink)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--amber)] hover:decoration-[var(--amber)]"
                 >
                   Documentación de la API
                 </Link>
-                <p className="mt-1 text-[var(--ash)]">
+                <p className="mt-1 text-[var(--mute)]">
                   endpoints REST, ejemplos de request y response.
                 </p>
               </li>
               <li className="border-b border-[var(--line)] pb-4">
                 <a
                   href={downloadUrl("csv")}
-                  className="font-serif text-lg text-[var(--neutral)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--gain)] hover:decoration-[var(--gain)]"
+                  className="font-serif text-lg text-[var(--ink)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--amber)] hover:decoration-[var(--amber)]"
                 >
                   Descarga del dataset (CSV)
                 </a>
-                <p className="mt-1 text-[var(--ash)]">
+                <p className="mt-1 text-[var(--mute)]">
                   conjunto completo de puntos.
                 </p>
               </li>
               <li>
                 <Link
                   href="/dashboard"
-                  className="font-serif text-lg text-[var(--neutral)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--gain)] hover:decoration-[var(--gain)]"
+                  className="font-serif text-lg text-[var(--ink)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--amber)] hover:decoration-[var(--amber)]"
                 >
                   Explorador a pantalla completa
                 </Link>
-                <p className="mt-1 text-[var(--ash)]">
+                <p className="mt-1 text-[var(--mute)]">
                   mapa con filtros y estadísticas.
                 </p>
               </li>

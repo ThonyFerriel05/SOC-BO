@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --void: #0b0e0c;
-  --panel: #141a16;
-  --mist: #c8d0c9;
-  --ash: #7a857c;
-  --loss: #c23b2a;
-  --gain: #2f8f4e;
-  --neutral: #f4f6f4;
-  --line: #243028;
+  --void: #0b0f0d;
+  --panel: #121712;
+  --ink: #e8e6e1;
+  --mute: #8c948c;
+  --loss: #c1502e;
+  --gain: #3f7a4e;
+  --amber: #d9a441;
+  --line: #1e261f;
   --background: var(--void);
-  --foreground: var(--mist);
+  --foreground: var(--ink);
   color-scheme: dark;
 }
 
@@ -19,15 +19,15 @@
   --color-foreground: var(--foreground);
   --color-void: var(--void);
   --color-panel: var(--panel);
-  --color-mist: var(--mist);
-  --color-ash: var(--ash);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
   --color-loss: var(--loss);
   --color-gain: var(--gain);
-  --color-neutral: var(--neutral);
+  --color-amber: var(--amber);
   --color-line: var(--line);
-  --font-sans: var(--font-source-sans);
-  --font-serif: var(--font-source-serif);
-  --font-mono: var(--font-plex-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains);
 }
 
 html {
@@ -36,71 +36,56 @@ html {
 
 body {
   background: var(--void);
-  color: var(--mist);
-  font-family: var(--font-source-sans), system-ui, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--gain) 40%, transparent);
-  color: var(--neutral);
+  background: color-mix(in srgb, var(--amber) 35%, transparent);
+  color: var(--ink);
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--gain);
+  outline: 2px solid var(--amber);
   outline-offset: 3px;
 }
 
-.anomaly-bar {
-  height: 3px;
-  width: 100%;
-  background: linear-gradient(
-    to right,
-    #a50026 0%,
-    #c23b2a 20%,
-    #f4f6f4 50%,
-    #2f8f4e 80%,
-    #006837 100%
-  );
+/* Firma: dos puntos loss/gain */
+.motif-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.motif-dots::before,
+.motif-dots::after {
+  content: "";
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.motif-dots::before {
+  background: var(--loss);
+}
+
+.motif-dots::after {
+  background: var(--gain);
 }
 
 .section-eyebrow {
-  position: relative;
-  font-family: var(--font-source-sans), system-ui, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ash);
-  padding-left: 0.85rem;
-}
-
-.section-eyebrow::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.1em;
-  bottom: 0.1em;
-  width: 3px;
-  background: linear-gradient(
-    to bottom,
-    var(--loss),
-    var(--neutral),
-    var(--gain)
-  );
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  color: var(--mute);
 }
 
 .cta-primary {
@@ -108,8 +93,8 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
-  background: var(--loss);
-  color: var(--neutral);
+  background: var(--amber);
+  color: #1a1508;
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.7rem 1.25rem;
@@ -119,31 +104,21 @@ button:focus-visible {
 }
 
 .cta-primary:hover {
-  background: color-mix(in srgb, var(--loss) 88%, white);
+  background: color-mix(in srgb, var(--amber) 88%, white);
   transform: translateY(-1px);
 }
 
-.cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.25rem;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--mist);
-  font-size: 0.875rem;
-  font-weight: 600;
-  padding: 0.6rem 1rem;
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
   transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    background 0.2s ease;
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
-.cta-secondary:hover {
-  border-color: var(--gain);
-  color: var(--neutral);
-  background: color-mix(in srgb, var(--gain) 12%, transparent);
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -162,13 +137,12 @@ button:focus-visible {
   }
 }
 
-/* Leaflet overrides aligned to design system */
 .leaflet-tooltip {
   background: var(--panel);
   border: 1px solid var(--line);
-  color: var(--mist);
+  color: var(--ink);
   box-shadow: none;
-  font-family: var(--font-source-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 .leaflet-tooltip-top::before {
@@ -176,10 +150,10 @@ button:focus-visible {
 }
 
 .leaflet-control-attribution {
-  background: color-mix(in srgb, var(--panel) 85%, transparent) !important;
-  color: var(--ash) !important;
+  background: color-mix(in srgb, var(--panel) 88%, transparent) !important;
+  color: var(--mute) !important;
 }
 
 .leaflet-control-attribution a {
-  color: var(--mist) !important;
+  color: var(--ink) !important;
 }

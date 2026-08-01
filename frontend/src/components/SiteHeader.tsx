@@ -31,63 +31,59 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-[1200] bg-[color-mix(in_srgb,var(--void)_92%,transparent)] backdrop-blur-md">
-      <div className="anomaly-bar" aria-hidden="true" />
+    <header className="sticky top-0 z-[1200] border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--void)_94%,transparent)] backdrop-blur-md">
       <div className={`${INNER} flex h-14 items-center justify-between gap-4`}>
         <a
           href="#inicio"
-          className="shrink-0 font-serif text-base font-semibold tracking-tight text-[var(--neutral)]"
+          className="shrink-0 font-serif text-base font-semibold tracking-tight text-[var(--ink)]"
           onClick={() => setOpen(false)}
         >
           SOC-BO
         </a>
 
-        {/* Desktop: tabs horizontales */}
         <nav
           aria-label="Secciones"
-          className="hidden items-center gap-4 text-sm md:flex"
+          className="hidden items-center gap-5 text-sm md:flex"
         >
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-[var(--ash)] transition-colors hover:text-[var(--neutral)]"
+              className="text-[var(--mute)] transition-colors hover:text-[var(--ink)]"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* Mobile: hamburguesa */}
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center border border-[var(--line)] text-[var(--neutral)] md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center border border-[var(--line)] text-[var(--ink)] md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="font-sans text-lg leading-none" aria-hidden="true">
+          <span className="text-lg leading-none" aria-hidden="true">
             {open ? "✕" : "☰"}
           </span>
         </button>
       </div>
-      <div className="border-b border-[var(--line)]" />
 
       {open && (
         <div
           id="mobile-nav"
-          className="border-b border-[var(--line)] bg-[var(--panel)] md:hidden"
+          className="border-t border-[var(--line)] bg-[var(--panel)] md:hidden"
         >
           <nav
             aria-label="Secciones móviles"
-            className={`${INNER} flex flex-col py-2`}
+            className={`${INNER} flex flex-col py-1`}
           >
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="border-b border-[var(--line)] py-3 text-sm text-[var(--mist)] last:border-b-0"
+                className="border-b border-[var(--line)] py-3.5 text-sm text-[var(--ink)] last:border-b-0"
                 onClick={() => setOpen(false)}
               >
                 {link.label}

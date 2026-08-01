@@ -10,25 +10,26 @@ export default function AboutSection() {
       className="scroll-mt-16 border-t border-[var(--line)] bg-[var(--void)] py-10 sm:py-12"
     >
       <div className={`${INNER} flex flex-col gap-3`}>
-        <h2 className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ash)]">
+        <h2 className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--mute)]">
+          <span className="motif-dots" aria-hidden="true" />
           Sobre el proyecto
         </h2>
-        <p className="max-w-2xl text-xs leading-relaxed text-[var(--ash)]">
+        <p className="max-w-2xl text-xs leading-relaxed text-[var(--mute)]">
           {ABOUT.descripcion}
         </p>
-        <dl className="mt-2 grid gap-2 font-mono text-[11px] text-[var(--ash)] sm:grid-cols-2">
+        <dl className="mt-2 grid gap-2 font-mono text-[11px] text-[var(--mute)] sm:grid-cols-2">
           {ABOUT.autores.map((autor) => (
             <div key={autor.nombre} className="border-t border-[var(--line)] pt-2">
-              <dt className="text-[var(--mist)]">{autor.nombre}</dt>
+              <dt className="text-[var(--ink)]">{autor.nombre}</dt>
               <dd>{autor.rol}</dd>
             </div>
           ))}
           <div className="border-t border-[var(--line)] pt-2 sm:col-span-2">
-            <dt className="text-[var(--mist)]">Contacto</dt>
+            <dt className="text-[var(--ink)]">Contacto</dt>
             <dd>
               <a
                 href={`mailto:${ABOUT.contacto.email}`}
-                className="underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--gain)] hover:decoration-[var(--gain)]"
+                className="underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--amber)] hover:decoration-[var(--amber)]"
               >
                 {ABOUT.contacto.email}
               </a>

@@ -39,22 +39,23 @@ export default function LandingMapSection() {
     <>
       <section
         id="inicio"
-        className="scroll-mt-16 border-b border-[var(--line)] py-14 sm:py-20"
+        className="scroll-mt-16 bg-[var(--void)] py-14 sm:py-20"
       >
         <div className={`${INNER} flex max-w-3xl flex-col gap-5`}>
           <Reveal className="flex flex-col gap-4">
-            <h1 className="font-serif text-4xl font-semibold tracking-tight text-[var(--neutral)] md:text-5xl">
+            <h1 className="font-serif text-4xl font-semibold tracking-tight text-[var(--ink)] md:text-5xl">
               SOC-BO
             </h1>
-            <p className="section-eyebrow w-fit">
+            <p className="section-eyebrow">
+              <span className="motif-dots" aria-hidden="true" />
               Criticalidad autoorganizada en biomasa
             </p>
-            <p className="max-w-prose text-base leading-relaxed text-[var(--ash)] md:text-lg">
+            <p className="max-w-prose text-base leading-relaxed text-[var(--mute)] md:text-lg">
               Dataset de criticalidad autoorganizada calculado mediante el
               modelo sandpile de Bak-Tang-Wiesenfeld, aplicado a la
               acumulación de biomasa en Santa Cruz, Beni y Pando.
             </p>
-            <p className="font-mono text-xs text-[var(--ash)]">
+            <p className="font-mono text-xs text-[var(--mute)]">
               57 576 puntos · ~1 km · WGS84
             </p>
           </Reveal>
@@ -63,14 +64,17 @@ export default function LandingMapSection() {
 
       <section
         id="explorador"
-        className="scroll-mt-16 border-b border-[var(--line)] bg-[var(--panel)] py-12 sm:py-16"
+        className="scroll-mt-16 bg-[var(--panel)] py-12 sm:py-16"
       >
         <div className={`${INNER} flex flex-col gap-5`}>
           <Reveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="section-eyebrow">Explorador cartográfico</h2>
-                <p className="mt-3 font-serif text-2xl text-[var(--neutral)]">
+                <h2 className="section-eyebrow">
+                  <span className="motif-dots" aria-hidden="true" />
+                  Explorador cartográfico
+                </h2>
+                <p className="mt-3 font-serif text-2xl text-[var(--ink)]">
                   Distribución espacial de diferencia_biomasa en la grilla.
                 </p>
               </div>
