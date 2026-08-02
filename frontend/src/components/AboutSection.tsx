@@ -7,7 +7,7 @@ export default function AboutSection() {
   return (
     <footer
       id="sobre"
-      className="scroll-mt-16 border-t border-[var(--line)] bg-[var(--void)] py-10 sm:py-12"
+      className="section-panel scroll-mt-16 py-10 sm:py-12"
     >
       <div className={`${INNER} flex flex-col gap-3`}>
         <h2 className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--mute)]">

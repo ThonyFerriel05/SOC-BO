@@ -62,7 +62,7 @@ export default function Home() {
 
       <section
         id="dataset"
-        className="scroll-mt-16 bg-[var(--panel)] py-14 sm:py-20"
+        className="section-panel scroll-mt-16 py-14 sm:py-20"
       >
         <div className={INNER}>
           <Reveal className="flex flex-col gap-4">
@@ -120,7 +120,7 @@ export default function Home() {
 
       <section
         id="citar"
-        className="scroll-mt-16 bg-[var(--panel)] py-14 sm:py-20"
+        className="section-panel scroll-mt-16 py-14 sm:py-20"
       >
         <div className={`${INNER} flex flex-col gap-4`}>
           <Reveal className="flex flex-col gap-4">

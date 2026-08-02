@@ -64,7 +64,7 @@ export default function LandingMapSection() {
 
       <section
         id="explorador"
-        className="scroll-mt-16 bg-[var(--panel)] py-12 sm:py-16"
+        className="section-panel scroll-mt-16 py-12 sm:py-16"
       >
         <div className={`${INNER} flex flex-col gap-5`}>
           <Reveal>

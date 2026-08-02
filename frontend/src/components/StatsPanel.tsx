@@ -2,9 +2,9 @@ import { DepartamentoFiltro, StatsResponse } from "@/lib/types";
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
-      <p className="text-xs text-neutral-500">{label}</p>
-      <p className="text-lg font-semibold text-neutral-100">{value}</p>
+    <div className="rounded border border-[var(--line)] bg-[var(--base)] p-3">
+      <p className="text-xs text-[var(--mute)]">{label}</p>
+      <p className="font-mono text-lg font-semibold text-[var(--ink)]">{value}</p>
     </div>
   );
 }
@@ -18,13 +18,13 @@ export default function StatsPanel({
 }) {
   if (!stats) {
     return (
-      <div className="text-sm text-neutral-400">Cargando estadísticas...</div>
+      <div className="text-sm text-[var(--mute)]">Cargando estadísticas...</div>
     );
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+      <h2 className="text-xs font-semibold uppercase tracking-wide text-[var(--mute)]">
         Estadísticas {departamento !== "Todos" ? `— ${departamento}` : "generales"}
       </h2>
       <div className="grid grid-cols-2 gap-3">
@@ -40,14 +40,14 @@ export default function StatsPanel({
         <StatCard label="Mínimo" value={stats.min_diferencia_biomasa.toFixed(4)} />
       </div>
       <div>
-        <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+        <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mute)]">
           Por departamento
         </h3>
         <ul className="flex flex-col gap-1 text-sm">
           {stats.por_departamento.map((d) => (
             <li
               key={d.departamento}
-              className="flex justify-between rounded bg-neutral-800/60 px-2 py-1 text-neutral-200"
+              className="flex justify-between rounded bg-[var(--base)] px-2 py-1 text-[var(--ink)]"
             >
               <span>{d.departamento}</span>
               <span className="font-mono">
@@ -59,19 +59,19 @@ export default function StatsPanel({
       </div>
       {stats.top_riesgo.length > 0 && (
         <div>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mute)]">
             Top riesgo (mayor acumulación)
           </h3>
           <ul className="flex max-h-48 flex-col gap-1 overflow-y-auto text-sm">
             {stats.top_riesgo.slice(0, 10).map((p) => (
               <li
                 key={p.id}
-                className="flex justify-between rounded bg-neutral-800/60 px-2 py-1 text-neutral-200"
+                className="flex justify-between rounded bg-[var(--base)] px-2 py-1 text-[var(--ink)]"
               >
                 <span>
                   {p.municipio} ({p.departamento})
                 </span>
-                <span className="font-mono text-red-400">
+                <span className="font-mono text-[var(--loss)]">
                   {p.diferencia_biomasa.toFixed(4)}
                 </span>
               </li>

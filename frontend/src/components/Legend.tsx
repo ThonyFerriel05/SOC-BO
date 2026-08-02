@@ -2,7 +2,7 @@ import { BIOMASS_GRADIENT_CSS, BIOMASS_TICKS } from "@/lib/color";
 
 export default function Legend() {
   return (
-    <div className="absolute bottom-2 right-2 z-[1000] border border-[var(--line)] bg-[color-mix(in_srgb,var(--panel)_94%,transparent)] px-2.5 py-2 text-xs text-[var(--ink)] backdrop-blur-sm sm:px-3">
+    <div className="map-chrome absolute bottom-2 right-2 z-[1000] rounded px-2.5 py-2 text-xs text-[var(--ink)] sm:px-3">
       <p className="mb-1.5 font-sans text-[11px] font-medium tracking-wide">
         Diferencia de biomasa
       </p>

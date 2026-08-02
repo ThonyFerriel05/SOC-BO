@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --void: #0b0f0d;
-  --panel: #121712;
-  --ink: #e8e6e1;
-  --mute: #8c948c;
-  --loss: #c1502e;
-  --gain: #3f7a4e;
-  --amber: #d9a441;
-  --line: #1e261f;
-  --background: var(--void);
+  --base: #fafaf7;
+  --void: var(--base); /* alias: fondos claros (antes dark void) */
+  --panel: #f0f0ea;
+  --ink: #1a1d1a;
+  --mute: #5c635c;
+  --loss: #a83e20;
+  --gain: #2e5f3b;
+  --amber: #b8791f;
+  --line: #d5d6cc;
+  --background: var(--base);
   --foreground: var(--ink);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-base: var(--base);
   --color-void: var(--void);
   --color-panel: var(--panel);
   --color-ink: var(--ink);
@@ -35,13 +37,13 @@ html {
 }
 
 body {
-  background: var(--void);
+  background: var(--base);
   color: var(--ink);
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--amber) 35%, transparent);
+  background: color-mix(in srgb, var(--amber) 30%, transparent);
   color: var(--ink);
 }
 
@@ -51,7 +53,6 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-/* Firma: dos puntos loss/gain */
 .motif-dots {
   display: inline-flex;
   align-items: center;
@@ -88,13 +89,22 @@ button:focus-visible {
   color: var(--mute);
 }
 
+.section-panel {
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 55%),
+    0 1px 0 rgb(26 29 26 / 3%);
+}
+
 .cta-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
   background: var(--amber);
-  color: #1a1508;
+  color: #fffdf6;
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.7rem 1.25rem;
@@ -104,7 +114,7 @@ button:focus-visible {
 }
 
 .cta-primary:hover {
-  background: color-mix(in srgb, var(--amber) 88%, white);
+  background: color-mix(in srgb, var(--amber) 88%, black);
   transform: translateY(-1px);
 }
 
@@ -137,11 +147,18 @@ button:focus-visible {
   }
 }
 
+.map-chrome {
+  border: 1px solid var(--line);
+  background: var(--base);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(26 29 26 / 6%);
+}
+
 .leaflet-tooltip {
-  background: var(--panel);
+  background: var(--base);
   border: 1px solid var(--line);
   color: var(--ink);
-  box-shadow: none;
+  box-shadow: 0 1px 3px rgb(26 29 26 / 10%);
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
@@ -150,7 +167,7 @@ button:focus-visible {
 }
 
 .leaflet-control-attribution {
-  background: color-mix(in srgb, var(--panel) 88%, transparent) !important;
+  background: color-mix(in srgb, var(--base) 92%, transparent) !important;
   color: var(--mute) !important;
 }
 

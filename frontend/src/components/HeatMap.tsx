@@ -34,12 +34,12 @@ const CARTO_ATTRIBUTION = `${OSM_ATTRIBUTION} &copy; <a href="https://carto.com/
 
 const BASEMAPS = {
   claro: {
-    label: "Mapa oscuro",
+    label: "Capa oscura",
     url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
     attribution: CARTO_ATTRIBUTION,
   },
   oscuro: {
-    label: "Mapa claro",
+    label: "Capa clara",
     url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
     attribution: CARTO_ATTRIBUTION,
   },
@@ -143,14 +143,15 @@ export default function HeatMap({
   return (
     <div className="relative h-full w-full">
       {loading && (
-        <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-neutral-950/70 text-sm font-medium text-neutral-200">
+        <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-[color-mix(in_srgb,var(--base)_80%,transparent)] text-sm font-medium text-[var(--ink)]">
           Cargando puntos...
         </div>
       )}
       <button
         type="button"
         onClick={() => setTheme(theme === "oscuro" ? "claro" : "oscuro")}
-        className="absolute right-2 top-2 z-[1000] rounded border border-neutral-800 bg-neutral-900/90 px-2 py-1 text-xs font-medium text-neutral-300 shadow-lg transition-colors hover:border-neutral-600 hover:text-neutral-100"
+        title="Alternar capa base del mapa (no el tema del sitio)"
+        className="map-chrome absolute right-2 top-2 z-[1000] rounded px-2 py-1 text-xs font-medium transition-colors hover:border-[var(--mute)]"
       >
         {basemap.label}
       </button>
@@ -189,7 +190,7 @@ export default function HeatMap({
           </CircleMarker>
         ))}
       </MapContainer>
-      <div className="absolute bottom-2 left-2 z-[1000] hidden rounded border border-neutral-800 bg-neutral-900/90 px-2 py-1 text-xs text-neutral-300 shadow-lg md:block">
+      <div className="map-chrome absolute bottom-2 left-2 z-[1000] hidden rounded px-2 py-1 text-xs text-[var(--mute)] md:block">
         {overview ? (
           <>
             Vista general · {markers.length.toLocaleString()} de{" "}
